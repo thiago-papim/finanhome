@@ -196,7 +196,7 @@ export const useStepper = (initialCreditType = null) => {
   // Calcular progresso
   const progress = useMemo(() => {
     if (steps.length === 0) return 0;
-    
+
     // Se não há tipo de crédito selecionado, calcular progresso baseado em estimativa
     // Assumindo que após selecionar o tipo, haverá aproximadamente 8-9 steps adicionais
     if (!creditType) {
@@ -204,7 +204,7 @@ export const useStepper = (initialCreditType = null) => {
       const estimatedTotalSteps = 10;
       return Math.round(((currentStep + 1) / estimatedTotalSteps) * 100);
     }
-    
+
     // Quando há tipo de crédito, calcular normalmente
     return Math.round(((currentStep + 1) / steps.length) * 100);
   }, [currentStep, steps.length, creditType]);
