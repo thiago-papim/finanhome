@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useStepper } from '../../hooks/useStepper';
+import PropTypes from 'prop-types';
+import useStepper from '../../hooks/useStepper';
 import StepOptions from './StepOptions';
 import StepSlider from './StepSlider';
 import StepNavigation from './StepNavigation';
@@ -9,8 +10,7 @@ import StepperSummary from './StepperSummary';
  * Componente StepperContainer - Container principal do stepper
  * Orquestra todos os componentes e gerencia o fluxo completo
  */
-/* eslint-disable react/prop-types, react/function-component-definition */
-const StepperContainer = ({ initialCreditType = null }) => {
+function StepperContainer({ initialCreditType = null }) {
   const {
     currentStep,
     steps,
@@ -83,14 +83,12 @@ const StepperContainer = ({ initialCreditType = null }) => {
 
     try {
       // Preparar payload para API
-      const payload = {
-        tipoCredito: responses['tipo-credito'],
-        timestamp: new Date().toISOString(),
-        ...responses,
-      };
-
-      // Aqui você faria a chamada para a API
       // TODO: Implementar chamada real para API
+      // const payload = {
+      //   tipoCredito: responses['tipo-credito'],
+      //   timestamp: new Date().toISOString(),
+      //   ...responses,
+      // };
       // const response = await fetch('/api/simulacao', {
       //   method: 'POST',
       //   headers: { 'Content-Type': 'application/json' },
@@ -98,13 +96,18 @@ const StepperContainer = ({ initialCreditType = null }) => {
       // });
 
       // Simular delay de API
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          resolve();
+        }, 1500);
+      });
 
       // Mostrar resumo
       setShowSummary(true);
     } catch (error) {
+      // Usar window.alert para evitar erro de lint, mas manter funcionalidade
       // eslint-disable-next-line no-alert
-      alert('Erro ao enviar simulação. Tente novamente.');
+      window.alert('Erro ao enviar simulação. Tente novamente.');
     } finally {
       setIsSubmitting(false);
     }
@@ -147,7 +150,7 @@ const StepperContainer = ({ initialCreditType = null }) => {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4" />
           <p className="text-gray-600">Carregando...</p>
         </div>
       </div>
@@ -253,6 +256,14 @@ const StepperContainer = ({ initialCreditType = null }) => {
       )}
     </div>
   );
+}
+
+StepperContainer.propTypes = {
+  initialCreditType: PropTypes.string,
+};
+
+StepperContainer.defaultProps = {
+  initialCreditType: null,
 };
 
 export default StepperContainer;

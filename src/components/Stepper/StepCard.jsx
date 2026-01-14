@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   HomeIcon,
   CurrencyDollarIcon,
@@ -36,8 +37,7 @@ const iconMap = {
  * Componente StepCard - Card clicável para opções
  * Com imagem, label, estados visuais e animações
  */
-/* eslint-disable react/prop-types, react/function-component-definition */
-const StepCard = ({ option, isSelected = false, isDisabled = false, onClick }) => {
+function StepCard({ option, isSelected = false, isDisabled = false, onClick }) {
   const [imageError, setImageError] = React.useState(false);
   const [isHovered, setIsHovered] = React.useState(false);
 
@@ -155,6 +155,23 @@ const StepCard = ({ option, isSelected = false, isDisabled = false, onClick }) =
       )}
     </button>
   );
+}
+
+StepCard.propTypes = {
+  option: PropTypes.shape({
+    value: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    image: PropTypes.string,
+    icon: PropTypes.string,
+  }).isRequired,
+  isSelected: PropTypes.bool,
+  isDisabled: PropTypes.bool,
+  onClick: PropTypes.func.isRequired,
+};
+
+StepCard.defaultProps = {
+  isSelected: false,
+  isDisabled: false,
 };
 
 export default StepCard;

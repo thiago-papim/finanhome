@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
 import { Divider } from '@mui/material';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';

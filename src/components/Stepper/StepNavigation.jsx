@@ -1,11 +1,12 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 /**
  * Componente StepNavigation - Navegação entre steps
  * Botões de voltar, avançar e pular para finalização
  */
-/* eslint-disable react/prop-types, react/function-component-definition */
-const StepNavigation = ({
+function StepNavigation({
   isFirstStep,
   isLastStep,
   canGoNext,
@@ -15,7 +16,47 @@ const StepNavigation = ({
   onFinish,
   isLoading = false,
   showNextButton = true, // Por padrão mostra, mas pode ser controlado
-}) => {
+}) {
+  const getButtonClassName = () => {
+    if (!canGoNext || isLoading) {
+      return 'bg-gray-400 cursor-not-allowed';
+    }
+    if (isLastStep) {
+      return 'bg-green-600 hover:bg-green-700 hover:shadow-xl';
+    }
+    return 'bg-blue-600 hover:bg-blue-700 hover:shadow-xl';
+  };
+
+  const getButtonText = () => {
+    if (isLoading) {
+      return (
+        <span className="flex items-center gap-2">
+          <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+              fill="none"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            />
+          </svg>
+          Processando...
+        </span>
+      );
+    }
+    if (isLastStep) {
+      return '✓ Finalizar Simulação';
+    }
+    return 'Avançar →';
+  };
+
   return (
     <div
       className={`flex flex-col sm:flex-row gap-4 mt-8 pt-6 border-t border-gray-200 ${
@@ -52,47 +93,30 @@ const StepNavigation = ({
           type="button"
           onClick={isLastStep ? onFinish : onNext}
           disabled={!canGoNext || isLoading}
-          className={`px-8 py-3 rounded-lg font-semibold text-white transition-all duration-200 shadow-lg ${
-            (() => {
-              if (!canGoNext || isLoading) {
-                return 'bg-gray-400 cursor-not-allowed';
-              }
-              if (isLastStep) {
-                return 'bg-green-600 hover:bg-green-700 hover:shadow-xl';
-              }
-              return 'bg-blue-600 hover:bg-blue-700 hover:shadow-xl';
-            })()
-          }`}
+          className={`px-8 py-3 rounded-lg font-semibold text-white transition-all duration-200 shadow-lg ${getButtonClassName()}`}
         >
-          {isLoading ? (
-            <span className="flex items-center gap-2">
-              <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                  fill="none"
-                />
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                />
-              </svg>
-              Processando...
-            </span>
-          ) : isLastStep ? (
-            '✓ Finalizar Simulação'
-          ) : (
-            'Avançar →'
-          )}
+          {getButtonText()}
         </button>
       )}
     </div>
   );
+}
+
+StepNavigation.propTypes = {
+  isFirstStep: PropTypes.bool.isRequired,
+  isLastStep: PropTypes.bool.isRequired,
+  canGoNext: PropTypes.bool.isRequired,
+  canGoBack: PropTypes.bool.isRequired,
+  onNext: PropTypes.func.isRequired,
+  onBack: PropTypes.func.isRequired,
+  onFinish: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
+  showNextButton: PropTypes.bool,
+};
+
+StepNavigation.defaultProps = {
+  isLoading: false,
+  showNextButton: true,
 };
 
 export default StepNavigation;

@@ -1,23 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   CheckCircleIcon,
   HomeIcon,
   CurrencyDollarIcon,
-  BuildingOfficeIcon,
-  MapPinIcon,
-  ShoppingBagIcon,
   ClockIcon,
-  CalendarIcon,
   UserIcon,
-  ChartBarIcon,
 } from '@heroicons/react/24/solid';
 
 /**
  * Componente StepperSummary - Resumo visual completo das respostas
  * Exibe todas as respostas com ícones e formatação
  */
-/* eslint-disable react/prop-types, react/function-component-definition */
-const StepperSummary = ({ steps, responses, creditType }) => {
+function StepperSummary({ steps, responses, creditType }) {
   // Formatar valor monetário
   const formatCurrency = (value) => {
     if (typeof value !== 'number') return value;
@@ -71,7 +66,7 @@ const StepperSummary = ({ steps, responses, creditType }) => {
       </div>
 
       <div className="grid gap-4">
-        {steps.map((step, index) => {
+        {steps.map((step) => {
           const response = responses[step.id];
           if (!response) return null;
 
@@ -119,6 +114,30 @@ const StepperSummary = ({ steps, responses, creditType }) => {
       </div>
     </div>
   );
+}
+
+StepperSummary.propTypes = {
+  steps: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      description: PropTypes.string,
+      type: PropTypes.string.isRequired,
+      options: PropTypes.arrayOf(
+        PropTypes.shape({
+          value: PropTypes.string.isRequired,
+          label: PropTypes.string.isRequired,
+        }),
+      ),
+    }),
+  ).isRequired,
+  responses: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
+    .isRequired,
+  creditType: PropTypes.string,
+};
+
+StepperSummary.defaultProps = {
+  creditType: null,
 };
 
 export default StepperSummary;

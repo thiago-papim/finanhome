@@ -450,4 +450,3 @@ export const getStepsByCreditType = (creditType) => {
   }
   return initialSteps;
 };
-

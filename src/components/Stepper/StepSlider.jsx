@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { TextField, Slider } from '@mui/material';
 
 /**
  * Componente StepSlider - Slider avançado para valores monetários
  * Com formatação, validação e feedback visual
  */
-/* eslint-disable react/prop-types, react/function-component-definition */
-const StepSlider = ({ step, value, onChange, error, dependentValue, maxPercent }) => {
+function StepSlider({ step, value, onChange, error, dependentValue, maxPercent }) {
   // Valor padrão inicial
   const defaultValue = step.min || 50000;
 
@@ -176,6 +176,28 @@ const StepSlider = ({ step, value, onChange, error, dependentValue, maxPercent }
       )}
     </div>
   );
+}
+
+StepSlider.propTypes = {
+  step: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    min: PropTypes.number,
+    max: PropTypes.number,
+    step: PropTypes.number,
+  }).isRequired,
+  value: PropTypes.number,
+  onChange: PropTypes.func.isRequired,
+  error: PropTypes.string,
+  dependentValue: PropTypes.number,
+  maxPercent: PropTypes.number,
+};
+
+StepSlider.defaultProps = {
+  value: null,
+  error: null,
+  dependentValue: null,
+  maxPercent: null,
 };
 
 export default StepSlider;

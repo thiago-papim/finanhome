@@ -74,9 +74,7 @@ export default function PontoUm() {
               <div className="mb-6 transform group-hover:scale-110 transition-transform duration-300">
                 {card.icon}
               </div>
-              <span className="text-xl md:text-2xl font-semibold text-gray-800">
-                {card.label}
-              </span>
+              <span className="text-xl md:text-2xl font-semibold text-gray-800">{card.label}</span>
             </button>
           ))}
         </div>

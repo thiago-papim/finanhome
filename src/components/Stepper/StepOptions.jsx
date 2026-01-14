@@ -1,12 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import StepCard from './StepCard';
 
 /**
  * Componente StepOptions - Renderiza opções em grid
  * Gerencia seleção e validação
  */
-/* eslint-disable react/prop-types, react/function-component-definition */
-const StepOptions = ({ step, selectedValue, onSelect, error }) => {
+function StepOptions({ step, selectedValue, onSelect, error }) {
   const handleSelect = (value) => {
     if (onSelect) {
       onSelect(value);
@@ -63,6 +63,26 @@ const StepOptions = ({ step, selectedValue, onSelect, error }) => {
       )}
     </div>
   );
+}
+
+StepOptions.propTypes = {
+  step: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    options: PropTypes.arrayOf(
+      PropTypes.shape({
+        value: PropTypes.string.isRequired,
+        label: PropTypes.string.isRequired,
+      }),
+    ),
+  }).isRequired,
+  selectedValue: PropTypes.string,
+  onSelect: PropTypes.func.isRequired,
+  error: PropTypes.string,
+};
+
+StepOptions.defaultProps = {
+  selectedValue: null,
+  error: null,
 };
 
 export default StepOptions;

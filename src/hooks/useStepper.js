@@ -5,8 +5,7 @@ import { getStepsByCreditType } from '../components/Stepper/stepper.config';
  * Hook customizado para gerenciar o estado do stepper
  * Centraliza toda a lógica de navegação, validação e dados
  */
-// eslint-disable-next-line import/prefer-default-export
-export const useStepper = (initialCreditType = null) => {
+const useStepper = (initialCreditType = null) => {
   const [currentStep, setCurrentStep] = useState(initialCreditType ? 1 : 0);
   const [creditType, setCreditType] = useState(initialCreditType);
   const [responses, setResponses] = useState(
@@ -248,3 +247,5 @@ export const useStepper = (initialCreditType = null) => {
     currentStepData: steps[currentStep],
   };
 };
+
+export default useStepper;
