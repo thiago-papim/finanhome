@@ -1,18 +1,14 @@
 import React from 'react';
-import fundoCapa from '../imagens/fundo-capa.svg';
 import HeaderSimulacao from '../components/HeaderSimulacao';
-import PontoUm from '../components/simulacao/PontoUm';
+import StepperContainer from '../components/Stepper/StepperContainer';
 
 export default function Simulacao() {
   return (
-    <div className="h-screen">
-      <img
-        src={fundoCapa}
-        alt="background"
-        className="absolute inset-0 w-full h-full object-cover -z-10"
-      />
+    <div className="min-h-screen bg-black relative">
       <HeaderSimulacao />
-      <PontoUm />
+      <div className="flex w-full justify-center items-start min-h-screen pt-8 pb-20">
+        <StepperContainer />
+      </div>
     </div>
   );
 }

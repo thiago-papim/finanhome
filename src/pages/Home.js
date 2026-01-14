@@ -28,33 +28,34 @@ export default function Home() {
       <img
         src={capa}
         alt="capa"
-        className="absolute right-0 top-0 object-cover z-0 h-screen max-w-[50%] mask-gradient-top lg:flex hidden"
+        className="absolute right-0 top-0 object-cover z-0 h-screen max-w-[50%] mask-gradient-top md:flex hidden"
       />
-
       <Header />
-
+      <div className="flex justify-end">
+        <img src={capa} alt="capa" className="md:hidden w-96" />
+      </div>
       <div className="relative z-10 max-w-[1200px] px-6 w-full mx-auto h-full flex flex-col">
-        <div className="flex flex-col flex-1 max-w-[700px] mt-20">
-          <h1 className="font-darkerGrotesque text-[60px] leading-[1.0] font-bold mb-6">
+        <div className="flex flex-col flex-1 max-w-[700px] md:mt-20 mt-5">
+          <h1 className="font-darkerGrotesque md:text-[60px] text-[42px] leading-[1.0] font-bold mb-6">
             O crédito que você precisa, do jeito que você merece.
           </h1>
-          <p className="text-[25px] text-gray-600 font-medium mb-5">
+          <p className="md:text-[25px] text-[20px] text-gray-600 font-medium mb-5">
             Crédito <strong>rápido</strong>, <strong>fácil</strong> e feito pra{' '}
             <strong>você</strong>.
           </p>
           <Divider />
 
-          <p className="text-[25px] text-gray-600 font-medium text-center mt-5">
+          <p className="md:text-[25px] text-[20px] text-gray-600 font-medium text-center mt-5">
             Plataforma multibancos
           </p>
           <div className="mt-5 flex gap-10 flex-wrap justify-center">
             {arrLogos.map((e) => (
-              <img key={e} src={e} alt={e} className="h-8" />
+              <img key={e} src={e} alt={e} className="md:h-8 h-5" />
             ))}
           </div>
 
           <button
-            className="my-10 bg-blue-600 hover:bg-blue-700 transition text-white font-semibold px-6 py-3 rounded-lg w-fit shadow-lg"
+            className="my-10 bg-blue-600 hover:bg-blue-700 transition text-white font-semibold px-6 py-3 rounded-md w-fit shadow-md"
             onClick={() => history.push('/simulador')}
           >
             SIMULE SEU CRÉDITO GRATUITAMENTE
@@ -81,12 +82,15 @@ export default function Home() {
           ].map((item, index) => (
             <div
               key={item.title}
-              className={`flex-1 px-4 ${index === 1 ? 'md:pl-12 border-gray-300' : ''} relative bg-white rounded-lg shadow-xl p-5`}
+              className={`flex-1 px-4 ${index === 1 ? 'md:pl-12 border-gray-300' : ''} relative bg-white rounded-md shadow-xl p-5`}
             >
               <div className="text-5xl mb-4">{item.icon}</div>
               <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
               <p className="text-gray-600">{item.desc}</p>
-              <button className="mt-3 bg-blue-600 hover:bg-blue-700 transition text-white font-semibold px-3 py-1 rounded-lg w-fit shadow-lg">
+              <button
+                onClick={() => history.push('/simulador')}
+                className="mt-3 bg-blue-600 hover:bg-blue-700 transition text-white font-semibold px-3 py-1 rounded-md w-fit shadow-md"
+              >
                 {item.btn}
               </button>
             </div>
@@ -123,7 +127,7 @@ export default function Home() {
       </section>
 
       {/* Seção: Parceiros */}
-      {/* <section className="py-16 bg-white text-center">
+      <section className="py-16 bg-white text-center">
         <h2 className="text-xl font-medium text-gray-600 mb-8">
           Parcerias com os principais bancos do país
         </h2>
@@ -132,15 +136,15 @@ export default function Home() {
             <img key={e} src={e} alt={e} className="h-8" />
           ))}
         </div>
-      </section> */}
+      </section>
 
       {/* Seção: FAQ */}
-      {/* <section className="bg-gray-50 py-20 px-6">
+      <section className="bg-gray-50 py-20 px-6">
         <h2 className="text-3xl font-bold text-center mb-12">Perguntas frequentes</h2>
         <div className="max-w-4xl mx-auto space-y-8">
           {[
             {
-              pergunta: 'Preciso ter conta em algum banco específico?',
+              pergunta: 'Preciso ter conta em amdum banco específico?',
               resposta:
                 'Não! Trabalhamos com várias instituições para garantir a melhor opção para você.',
             },
@@ -159,14 +163,14 @@ export default function Home() {
             </div>
           ))}
         </div>
-      </section> */}
+      </section>
 
       {/* Rodapé */}
-      {/* <footer className="bg-gray-800 text-white text-center py-6 mt-20">
+      <footer className="bg-gray-800 text-white text-center py-6 mt-20">
         <p className="text-sm">
           © {new Date().getFullYear()} FinanHome. Todos os direitos reservados.
         </p>
-      </footer> */}
+      </footer>
     </div>
   );
 }
