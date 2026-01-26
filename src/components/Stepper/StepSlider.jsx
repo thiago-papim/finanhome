@@ -6,7 +6,15 @@ import { TextField, Slider } from '@mui/material';
  * Componente StepSlider - Slider avançado para valores monetários
  * Com formatação, validação e feedback visual
  */
-function StepSlider({ step, value, onChange, error, dependentValue, maxPercent }) {
+function StepSlider({
+  step,
+  value,
+  onChange,
+  error,
+  dependentValue,
+  maxPercent,
+  isProcessing = false,
+}) {
   // Valor padrão inicial
   const defaultValue = step.min || 50000;
 
@@ -72,6 +80,10 @@ function StepSlider({ step, value, onChange, error, dependentValue, maxPercent }
 
   // Handler para slider
   const handleSliderChange = (event, newValue) => {
+    // Bloquear mudanças durante processamento
+    if (isProcessing) {
+      return;
+    }
     const clampedValue = Math.max(step.min || 0, Math.min(newValue, maxValue));
     setDisplayValue(clampedValue);
     setInputValue(formatCurrency(clampedValue));
@@ -82,6 +94,10 @@ function StepSlider({ step, value, onChange, error, dependentValue, maxPercent }
 
   // Handler para input
   const handleInputChange = (event) => {
+    // Bloquear mudanças durante processamento
+    if (isProcessing) {
+      return;
+    }
     const rawValue = event.target.value;
     setInputValue(rawValue);
     const parsedValue = parseInputValue(rawValue);
@@ -109,6 +125,7 @@ function StepSlider({ step, value, onChange, error, dependentValue, maxPercent }
           onChange={handleInputChange}
           onBlur={handleInputBlur}
           error={!!error}
+          disabled={isProcessing}
           helperText={
             error ||
             `Mínimo: ${formatCurrency(step.min || 0)} | Máximo: ${formatCurrency(maxValue)}`
@@ -130,6 +147,7 @@ function StepSlider({ step, value, onChange, error, dependentValue, maxPercent }
           step={step.step || 10000}
           valueLabelDisplay="auto"
           valueLabelFormat={formatCurrency}
+          disabled={isProcessing}
           sx={{
             color: '#3b82f6',
             height: 8,
@@ -191,6 +209,7 @@ StepSlider.propTypes = {
   error: PropTypes.string,
   dependentValue: PropTypes.number,
   maxPercent: PropTypes.number,
+  isProcessing: PropTypes.bool,
 };
 
 StepSlider.defaultProps = {
@@ -198,6 +217,7 @@ StepSlider.defaultProps = {
   error: null,
   dependentValue: null,
   maxPercent: null,
+  isProcessing: false,
 };
 
 export default StepSlider;

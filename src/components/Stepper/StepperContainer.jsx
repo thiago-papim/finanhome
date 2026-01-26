@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import useStepper from '../../hooks/useStepper';
 import StepOptions from './StepOptions';
@@ -30,10 +30,31 @@ function StepperContainer({ initialCreditType = null }) {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSummary, setShowSummary] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  // Resetar isProcessing quando o step mudar (após transição completa)
+  useEffect(() => {
+    // Pequeno delay para garantir que a transição visual foi concluída
+    const timer = setTimeout(() => {
+      setIsProcessing(false);
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [currentStep]);
 
   // Handler para seleção de opção (com avanço automático)
   const handleOptionSelect = (value) => {
+    // Bloquear todas as ações imediatamente
+    if (isProcessing) {
+      return;
+    }
+
     if (currentStepData) {
+      // Ativar estado de processamento IMEDIATAMENTE
+      setIsProcessing(true);
+
       // Limpar erro imediatamente antes de atualizar (evita flash de erro)
       // Atualizar resposta imediatamente (isso já limpa o erro)
       updateResponse(currentStepData.id, value);
@@ -46,13 +67,22 @@ function StepperContainer({ initialCreditType = null }) {
           // O updateResponse já atualizou o estado e limpou o erro
           nextStep(true); // skipValidation = true para steps de opção
           window.scrollTo({ top: 0, behavior: 'smooth' });
+          // Desativar processamento após a transição
+          setIsProcessing(false);
         }, 1000); // Delay de 1 segundo para mostrar feedback visual
+      } else {
+        // Se for o último step, desativar processamento imediatamente
+        setIsProcessing(false);
       }
     }
   };
 
   // Handler para mudança de slider
   const handleSliderChange = (value) => {
+    // Bloquear mudanças durante processamento
+    if (isProcessing) {
+      return;
+    }
     if (currentStepData) {
       updateResponse(currentStepData.id, value);
     }
@@ -60,6 +90,10 @@ function StepperContainer({ initialCreditType = null }) {
 
   // Handler para avançar
   const handleNext = () => {
+    // Bloquear durante processamento
+    if (isProcessing) {
+      return;
+    }
     if (nextStep()) {
       // Scroll para topo ao avançar
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -68,6 +102,10 @@ function StepperContainer({ initialCreditType = null }) {
 
   // Handler para voltar
   const handleBack = () => {
+    // Bloquear durante processamento
+    if (isProcessing) {
+      return;
+    }
     if (previousStep()) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -218,6 +256,7 @@ function StepperContainer({ initialCreditType = null }) {
             selectedValue={currentResponse}
             onSelect={handleOptionSelect}
             error={null}
+            isProcessing={isProcessing}
           />
         )}
 
@@ -229,6 +268,7 @@ function StepperContainer({ initialCreditType = null }) {
             error={currentError}
             dependentValue={dependentValue}
             maxPercent={maxPercent}
+            isProcessing={isProcessing}
           />
         )}
 
@@ -236,12 +276,12 @@ function StepperContainer({ initialCreditType = null }) {
         <StepNavigation
           isFirstStep={isFirstStep}
           isLastStep={shouldShowFinishButton}
-          canGoNext={canGoNext}
-          canGoBack={!isFirstStep}
+          canGoNext={canGoNext && !isProcessing}
+          canGoBack={!isFirstStep && !isProcessing}
           onNext={handleNext}
           onBack={handleBack}
           onFinish={handleFinish}
-          isLoading={isSubmitting}
+          isLoading={isSubmitting || isProcessing}
           showNextButton={shouldShowNextButton || shouldShowFinishButton}
         />
       </div>

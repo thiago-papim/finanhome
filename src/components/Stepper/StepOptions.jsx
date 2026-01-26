@@ -6,8 +6,12 @@ import StepCard from './StepCard';
  * Componente StepOptions - Renderiza opções em grid
  * Gerencia seleção e validação
  */
-function StepOptions({ step, selectedValue, onSelect, error }) {
+function StepOptions({ step, selectedValue, onSelect, error, isProcessing = false }) {
   const handleSelect = (value) => {
+    // Bloquear seleção durante processamento
+    if (isProcessing) {
+      return;
+    }
     if (onSelect) {
       onSelect(value);
     }
@@ -41,6 +45,7 @@ function StepOptions({ step, selectedValue, onSelect, error }) {
             option={option}
             isSelected={selectedValue === option.value}
             onClick={handleSelect}
+            isDisabled={isProcessing}
           />
         ))}
       </div>
@@ -78,11 +83,13 @@ StepOptions.propTypes = {
   selectedValue: PropTypes.string,
   onSelect: PropTypes.func.isRequired,
   error: PropTypes.string,
+  isProcessing: PropTypes.bool,
 };
 
 StepOptions.defaultProps = {
   selectedValue: null,
   error: null,
+  isProcessing: false,
 };
 
 export default StepOptions;
