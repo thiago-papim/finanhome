@@ -39,12 +39,12 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-slate-950 text-white overflow-x-hidden w-full max-w-full">
       <Header />
       {/* Hero Section */}
       <section id="inicio" className="relative">
         <AnimatedGradient className="relative min-h-screen flex items-center justify-center overflow-hidden">
-          <AnimatedGrid opacity="low" />
+          <AnimatedGrid opacity="high" />
           <AnimatedLines direction="horizontal" />
           <Spotlight intensity="high" className="absolute inset-0" />
 
@@ -162,10 +162,7 @@ export default function Home() {
                 <HoverCard glowColor={index % 2 === 0 ? 'blue' : 'emerald'}>
                   <div className="flex items-start gap-4">
                     <div className="flex-shrink-0">{item.icon}</div>
-                    <div className="flex-1">
-                      <span className="text-sm font-bold text-slate-400 mb-2 block">
-                        {item.step}
-                      </span>
+                    <div className="flex-1 md:min-h-40">
                       <h3 className="text-2xl font-bold mb-3">{item.title}</h3>
                       <p className="text-slate-400 leading-relaxed">{item.description}</p>
                     </div>
@@ -352,7 +349,9 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <TextReveal>
               <div>
-                <h2 className="text-4xl md:text-5xl font-bold mb-6">Crédito com lastro real</h2>
+                <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                  Crédito com garantia de imóvel
+                </h2>
                 <p className="text-2xl text-slate-300 mb-8">Seu patrimônio valorizado</p>
                 <p className="text-lg text-slate-400 mb-8 leading-relaxed">
                   Na FinanHome, acreditamos que seu imóvel é mais que um bem: é patrimônio que pode

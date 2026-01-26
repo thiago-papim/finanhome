@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 function AnimatedBorder({ children, className = '' }) {
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative overflow-hidden ${className}`}>
       <div
         className="absolute inset-0 rounded-2xl opacity-75"
         style={{

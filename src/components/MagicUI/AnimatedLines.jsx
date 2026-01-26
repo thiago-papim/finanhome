@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 function AnimatedLines({ className = '', direction = 'horizontal' }) {
   return (
-    <div className={`absolute inset-0 pointer-events-none opacity-5 ${className}`}>
+    <div className={`absolute inset-0 pointer-events-none opacity-5 ${className} overflow-hidden`}>
       {direction === 'horizontal' ? (
         <div
           className="w-full h-full"

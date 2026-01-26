@@ -9,7 +9,9 @@ function AnimatedGrid({ className = '', opacity = 'low' }) {
   };
 
   return (
-    <div className={`absolute inset-0 pointer-events-none ${opacityClasses[opacity]} ${className}`}>
+    <div
+      className={`absolute inset-0 pointer-events-none ${opacityClasses[opacity]} ${className} overflow-hidden`}
+    >
       <div
         className="w-full h-full"
         style={{
