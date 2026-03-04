@@ -20,11 +20,14 @@ function StepOptions({ step, selectedValue, onSelect, error, isProcessing = fals
   // Determinar layout baseado no número de opções
   const getGridClass = () => {
     const count = step.options?.length || 0;
-    if (count === 2) return 'grid-cols-1 md:grid-cols-2 gap-6';
-    if (count === 3) return 'grid-cols-1 md:grid-cols-3 gap-6';
-    if (count === 4) return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6';
-    if (count === 5) return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4';
-    return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
+    if (count === 2) return 'grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 md:gap-5 lg:gap-6';
+    if (count === 3)
+      return 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-5 lg:gap-6';
+    if (count === 4)
+      return 'grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6';
+    if (count === 5)
+      return 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3 md:gap-4';
+    return 'grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5 lg:gap-6';
   };
 
   if (!step.options || step.options.length === 0) {

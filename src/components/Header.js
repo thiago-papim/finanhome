@@ -15,6 +15,14 @@ const menuItems = [
   { label: 'Contato', id: 'contato' },
 ];
 
+// Textos atualizados para refletir os dois serviços
+const headerTexts = {
+  primaryCTA: 'Simular crédito',
+  secondaryCTA: 'Falar com especialista',
+  trustIndicator1: '100% seguro e regulado',
+  trustIndicator2: 'Financiamento e crédito com garantia',
+};
+
 export default function Header() {
   const history = useHistory();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -106,7 +114,7 @@ export default function Header() {
                 variant="primary"
                 className="text-sm px-6 py-2.5"
               >
-                Simular crédito
+                {headerTexts.primaryCTA}
               </ShinyButton>
             </div>
 
@@ -167,11 +175,11 @@ export default function Header() {
             <div className="mb-8 pb-8 border-b border-slate-700 space-y-3">
               <div className="flex items-center gap-2 text-sm text-slate-400">
                 <ShieldCheckIcon className="h-5 w-5 text-emerald-400" />
-                <span>100% seguro e regulado</span>
+                <span>{headerTexts.trustIndicator1}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-slate-400">
                 <LockClosedIcon className="h-5 w-5 text-blue-400" />
-                <span>Crédito com garantia de imóvel</span>
+                <span>{headerTexts.trustIndicator2}</span>
               </div>
             </div>
 
@@ -182,7 +190,7 @@ export default function Header() {
                 variant="primary"
                 className="w-full text-center justify-center"
               >
-                Simular crédito
+                {headerTexts.primaryCTA}
               </ShinyButton>
               <button
                 type="button"

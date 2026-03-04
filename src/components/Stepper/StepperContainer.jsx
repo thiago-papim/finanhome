@@ -24,8 +24,8 @@ function StepperContainer({ initialCreditType = null }) {
     creditType,
     nextStep,
     previousStep,
+    goToStep,
     updateResponse,
-    reset,
   } = useStepper(initialCreditType);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -151,34 +151,34 @@ function StepperContainer({ initialCreditType = null }) {
     }
   };
 
+  // Handler para voltar do resumo para o último step
+  const handleBackFromSummary = () => {
+    setShowSummary(false);
+    // Voltar para o último step
+    if (steps.length > 0) {
+      goToStep(steps.length - 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // Handler para editar step específico do resumo
+  const handleEditStepFromSummary = (stepIndex) => {
+    setShowSummary(false);
+    goToStep(stepIndex);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   // Se mostrar resumo, exibir componente de resumo
   if (showSummary) {
     return (
-      <div className="w-full max-w-4xl mx-auto px-4 py-8">
+      <div className="w-full max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
         <StepperSummary
           steps={steps}
           responses={responses}
           creditType={responses['tipo-credito']}
+          onBack={handleBackFromSummary}
+          onEditStep={handleEditStepFromSummary}
         />
-        <div className="mt-8 flex justify-center gap-4">
-          <button
-            type="button"
-            onClick={() => {
-              setShowSummary(false);
-              reset();
-            }}
-            className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
-          >
-            Nova Simulação
-          </button>
-          <button
-            type="button"
-            onClick={handleFinish}
-            className="px-8 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors shadow-lg"
-          >
-            Enviar Simulação
-          </button>
-        </div>
       </div>
     );
   }
@@ -218,34 +218,36 @@ function StepperContainer({ initialCreditType = null }) {
   }
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 py-8">
+    <div className="w-full max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
       {/* Indicador de progresso */}
-      <div className="mb-8">
+      <div className="mb-4 sm:mb-6 md:mb-8">
         <div className="flex items-center justify-between mb-2">
-          <div className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-semibold">
+          <div className="bg-blue-500 text-white px-2 sm:px-3 md:px-4 py-1 sm:py-1.5 md:py-2 rounded-lg text-xs sm:text-sm font-semibold">
             {progress}%
           </div>
-          <div className="text-gray-300 text-sm">
+          <div className="text-gray-300 text-xs sm:text-sm">
             Passo {currentStep + 1} de {steps.length}
           </div>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
+        <div className="w-full bg-gray-200 rounded-full h-1.5 sm:h-2">
           <div
-            className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+            className="bg-blue-500 h-1.5 sm:h-2 rounded-full transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
       </div>
 
       {/* Card principal do step */}
-      <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6 animate-fadeIn">
+      <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg sm:shadow-xl p-4 sm:p-5 md:p-6 lg:p-8 mb-4 sm:mb-5 md:mb-6 animate-fadeIn">
         {/* Título e descrição */}
-        <div className="mb-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
+        <div className="mb-4 sm:mb-6 md:mb-8">
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-2 sm:mb-3">
             {currentStepData.label}
           </h2>
           {currentStepData.description && (
-            <p className="text-lg text-gray-600">{currentStepData.description}</p>
+            <p className="text-sm sm:text-base md:text-lg text-gray-600">
+              {currentStepData.description}
+            </p>
           )}
         </div>
 
@@ -288,8 +290,8 @@ function StepperContainer({ initialCreditType = null }) {
 
       {/* Indicador de steps completos */}
       {isLastStep && canGoNext && (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
-          <p className="text-green-700 font-medium">
+        <div className="bg-green-50 border border-green-200 rounded-lg p-3 sm:p-4 text-center">
+          <p className="text-green-700 text-sm sm:text-base font-medium">
             ✓ Todas as informações foram preenchidas. Você pode finalizar a simulação.
           </p>
         </div>

@@ -30,8 +30,8 @@ function StepNavigation({
   const getButtonText = () => {
     if (isLoading) {
       return (
-        <span className="flex items-center gap-2">
-          <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+        <span className="flex items-center gap-1.5 sm:gap-2">
+          <svg className="animate-spin h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 24 24">
             <circle
               className="opacity-25"
               cx="12"
@@ -47,19 +47,19 @@ function StepNavigation({
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             />
           </svg>
-          Processando...
+          <span className="text-sm sm:text-base">Processando...</span>
         </span>
       );
     }
     if (isLastStep) {
-      return '✓ Finalizar Simulação';
+      return <span className="text-sm sm:text-base">✓ Finalizar Simulação</span>;
     }
-    return 'Avançar →';
+    return <span className="text-sm sm:text-base">Avançar →</span>;
   };
 
   return (
     <div
-      className={`flex flex-col sm:flex-row gap-4 mt-8 pt-6 border-t border-gray-200 ${
+      className={`flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4 sm:mt-6 md:mt-8 pt-4 sm:pt-5 md:pt-6 border-t border-gray-200 ${
         !showNextButton && !isFirstStep ? 'justify-start' : 'justify-between items-center'
       }`}
     >
@@ -70,9 +70,17 @@ function StepNavigation({
           onClick={onBack}
           disabled={!canGoBack || isLoading}
           className={`
-            px-6
-            py-3
+            w-full
+            sm:w-auto
+            px-4
+            sm:px-5
+            md:px-6
+            py-2
+            sm:py-2.5
+            md:py-3
             rounded-lg
+            text-sm
+            sm:text-base
             font-semibold
             transition-all
             duration-200
@@ -93,7 +101,7 @@ function StepNavigation({
           type="button"
           onClick={isLastStep ? onFinish : onNext}
           disabled={!canGoNext || isLoading}
-          className={`px-8 py-3 rounded-lg font-semibold text-white transition-all duration-200 shadow-lg ${getButtonClassName()}`}
+          className={`w-full sm:w-auto px-5 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 rounded-lg font-semibold text-white transition-all duration-200 shadow-md sm:shadow-lg ${getButtonClassName()}`}
         >
           {getButtonText()}
         </button>
