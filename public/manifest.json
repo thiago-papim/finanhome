@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "FinanHome",
+  "name": "FinanHome - Empréstimo e Financiamento com Garantia de Imóvel",
   "icons": [
     {
       "src": "favicon.ico",
