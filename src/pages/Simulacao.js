@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import HeaderSimulacao from '../components/HeaderSimulacao';
 import StepperContainer from '../components/Stepper/StepperContainer';
 import AnimatedGradient from '../components/MagicUI/AnimatedGradient';
@@ -6,6 +7,12 @@ import AnimatedGrid from '../components/MagicUI/AnimatedGrid';
 import AnimatedLines from '../components/MagicUI/AnimatedLines';
 
 export default function Simulacao() {
+  const history = useHistory();
+
+  const handleFormSubmitSuccess = (submissionData) => {
+    history.push('/simulador/parcelas', { submissionData });
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-white overflow-x-hidden w-full max-w-full">
       <HeaderSimulacao />
@@ -14,7 +21,7 @@ export default function Simulacao() {
           <AnimatedGrid opacity="low" />
           <AnimatedLines direction="horizontal" />
           <div className="flex w-full justify-center items-start min-h-screen pt-8 pb-20 relative z-10">
-            <StepperContainer />
+            <StepperContainer onFormSubmitSuccess={handleFormSubmitSuccess} />
           </div>
         </AnimatedGradient>
       </div>

@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import emailjs from '@emailjs/browser';
 import {
   CheckCircleIcon,
   HomeIcon,
   CurrencyDollarIcon,
   ClockIcon,
   UserIcon,
+  ArrowPathIcon,
 } from '@heroicons/react/24/solid';
+import { emailjs as emailjsConfig, isEmailjsConfigured } from '../../config/env';
 
 /**
  * Componente StepperSummary - Resumo visual completo das respostas
@@ -26,6 +29,8 @@ function StepperSummary({ steps, responses, creditType, onBack, onEditStep, onSu
     email: '',
     telefone: '',
   });
+
+  const [isSending, setIsSending] = useState(false);
 
   // Formatar valor monetário
   const formatCurrency = (value) => {
@@ -217,32 +222,59 @@ function StepperSummary({ steps, responses, creditType, onBack, onEditStep, onSu
     );
   };
 
-  // Handler de envio
-  const handleSubmit = (e) => {
+  // Handler de envio (envia por EmailJS e redireciona para simulador de parcelas)
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isFormValid()) return;
+    if (!isFormValid() || isSending) return;
 
-    // Criar JSON com todas as informações
-    const submissionData = {
-      dadosPessoais: {
-        nome: formData.nome.trim(),
-        cpf: formData.cpf.replace(/\D/g, ''),
-        email: formData.email.trim(),
-        telefone: formData.telefone.replace(/\D/g, ''),
-      },
-      simulacao: {
-        tipoCredito: creditType,
-        respostas: responses,
-        steps: steps.map((step) => ({
-          id: step.id,
-          label: step.label,
-          resposta: getFormattedResponse(step, responses[step.id]),
-        })),
-      },
-      timestamp: new Date().toISOString(),
-    };
-    if (typeof onSubmit === 'function') {
-      onSubmit(submissionData);
+    setIsSending(true);
+    try {
+      const nome = formData.nome.trim();
+      const cpf = formData.cpf.replace(/\D/g, '');
+      const telefone = formData.telefone.replace(/\D/g, '');
+      const email = formData.email.trim();
+
+      const stepsTexto = steps
+        .map((step) => {
+          const resposta = getFormattedResponse(step, responses[step.id]);
+          return `${step.label}: ${resposta}`;
+        })
+        .filter((linha) => linha)
+        .join('\n');
+
+      const submissionData = {
+        dadosPessoais: { nome, cpf, email, telefone },
+        simulacao: {
+          tipoCredito: creditType,
+          respostas: responses,
+          steps: steps.map((step) => ({
+            id: step.id,
+            label: step.label,
+            resposta: getFormattedResponse(step, responses[step.id]),
+          })),
+        },
+        timestamp: new Date().toISOString(),
+      };
+
+      if (isEmailjsConfigured()) {
+        try {
+          await emailjs.send(
+            emailjsConfig.serviceId,
+            emailjsConfig.templateId,
+            { nome, cpf, telefone, email, steps: stepsTexto },
+            emailjsConfig.publicKey,
+          );
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.warn('Falha ao enviar email:', err);
+        }
+      }
+
+      if (typeof onSubmit === 'function') {
+        onSubmit(submissionData);
+      }
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -451,14 +483,21 @@ function StepperSummary({ steps, responses, creditType, onBack, onEditStep, onSu
         <button
           type="button"
           onClick={handleSubmit}
-          disabled={!isFormValid()}
-          className={`w-full sm:flex-1 px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold text-white transition-all duration-200 shadow-lg ${
-            isFormValid()
+          disabled={!isFormValid() || isSending}
+          className={`w-full sm:flex-1 px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold text-white transition-all duration-200 shadow-lg flex items-center justify-center gap-2 ${
+            isFormValid() && !isSending
               ? 'bg-green-600 hover:bg-green-700 cursor-pointer'
               : 'bg-gray-400 cursor-not-allowed'
           }`}
         >
-          Enviar Simulação
+          {isSending ? (
+            <>
+              <ArrowPathIcon className="h-5 w-5 animate-spin flex-shrink-0" aria-hidden />
+              <span>Enviando...</span>
+            </>
+          ) : (
+            'Enviar Simulação'
+          )}
         </button>
       </div>
 

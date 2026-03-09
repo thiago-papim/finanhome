@@ -10,7 +10,7 @@ import StepperSummary from './StepperSummary';
  * Componente StepperContainer - Container principal do stepper
  * Orquestra todos os componentes e gerencia o fluxo completo
  */
-function StepperContainer({ initialCreditType = null }) {
+function StepperContainer({ initialCreditType = null, onFormSubmitSuccess }) {
   const {
     currentStep,
     steps,
@@ -178,6 +178,7 @@ function StepperContainer({ initialCreditType = null }) {
           creditType={responses['tipo-credito']}
           onBack={handleBackFromSummary}
           onEditStep={handleEditStepFromSummary}
+          onSubmit={onFormSubmitSuccess}
         />
       </div>
     );
@@ -302,10 +303,12 @@ function StepperContainer({ initialCreditType = null }) {
 
 StepperContainer.propTypes = {
   initialCreditType: PropTypes.string,
+  onFormSubmitSuccess: PropTypes.func,
 };
 
 StepperContainer.defaultProps = {
   initialCreditType: null,
+  onFormSubmitSuccess: null,
 };
 
 export default StepperContainer;
