@@ -13,11 +13,54 @@ function Hero({ onSimulate }) {
   return (
     <section id="inicio" className="relative">
       <AnimatedGradient className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Camadas de profundidade - Grid e linhas com opacidade variável */}
-        <AnimatedGrid opacity="high" />
-        <AnimatedGrid opacity="low" className="opacity-5" style={{ animationDelay: '10s' }} />
-        <AnimatedLines direction="horizontal" />
-        <AnimatedLines direction="vertical" className="opacity-3" />
+        {/* Orbs em gradiente animados - fundo mais chamativo */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div
+            className="absolute w-[80vmax] h-[80vmax] rounded-full blur-[120px] opacity-40 animate-float-slow"
+            style={{
+              background:
+                'radial-gradient(circle, rgba(59, 130, 246, 0.5) 0%, rgba(59, 130, 246, 0.1) 40%, transparent 70%)',
+              top: '-20%',
+              left: '-10%',
+            }}
+          />
+          <div
+            className="absolute w-[60vmax] h-[60vmax] rounded-full blur-[100px] opacity-35 animate-float-slower"
+            style={{
+              background:
+                'radial-gradient(circle, rgba(139, 92, 246, 0.45) 0%, rgba(139, 92, 246, 0.08) 50%, transparent 70%)',
+              top: '30%',
+              right: '-15%',
+            }}
+          />
+          <div
+            className="absolute w-[50vmax] h-[50vmax] rounded-full blur-[90px] opacity-30 animate-float-slow"
+            style={{
+              background:
+                'radial-gradient(circle, rgba(16, 185, 129, 0.4) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 70%)',
+              bottom: '-10%',
+              left: '20%',
+            }}
+          />
+        </div>
+
+        {/* Grid e linhas com mais presença */}
+        <AnimatedGrid opacity="high" className="opacity-20" />
+        <AnimatedGrid opacity="low" className="opacity-10" style={{ animationDelay: '10s' }} />
+        <AnimatedLines direction="horizontal" className="opacity-20" />
+        <AnimatedLines direction="vertical" className="opacity-15" />
+
+        {/* Mesh gradient overlay - mais drama */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: `
+              radial-gradient(ellipse 80% 50% at 50% 20%, rgba(59, 130, 246, 0.25), transparent 55%),
+              radial-gradient(ellipse 60% 40% at 80% 60%, rgba(139, 92, 246, 0.2), transparent 50%),
+              radial-gradient(ellipse 50% 50% at 20% 80%, rgba(16, 185, 129, 0.15), transparent 50%)
+            `,
+          }}
+        />
 
         {/* Spotlight mais focado no título */}
         <Spotlight intensity="high" className="absolute inset-0" />
@@ -25,7 +68,7 @@ function Hero({ onSimulate }) {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              'radial-gradient(circle at 50% 30%, rgba(59, 130, 246, 0.15), transparent 50%)',
+              'radial-gradient(circle at 50% 30%, rgba(59, 130, 246, 0.18), transparent 50%)',
           }}
         />
 
@@ -187,6 +230,21 @@ function Hero({ onSimulate }) {
           }
           .animate-pulse-slow {
             animation: pulse-slow 3s ease-in-out infinite;
+          }
+          @keyframes float-slow {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(3%, -2%) scale(1.02); }
+            66% { transform: translate(-2%, 2%) scale(0.98); }
+          }
+          .animate-float-slow {
+            animation: float-slow 12s ease-in-out infinite;
+          }
+          @keyframes float-slower {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-4%, 3%) scale(1.03); }
+          }
+          .animate-float-slower {
+            animation: float-slower 18s ease-in-out infinite;
           }
         `}
       </style>
