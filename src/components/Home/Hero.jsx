@@ -29,7 +29,7 @@ function Hero({ onSimulate }) {
           }}
         />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-32 text-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 py-10 text-center">
           {/* Título com destaque para os dois produtos */}
           <div className="mb-8">
             <TextReveal delay={0}>

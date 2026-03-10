@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import {
   CalculatorIcon,
@@ -90,6 +90,10 @@ export default function SimuladorParcelas() {
 
   const [customer, setCustomer] = useState(() => getInitialCustomerFromSubmission(submissionData));
   const [showAmortization, setShowAmortization] = useState(null);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const modalityConfig = MODALITY_CONFIG[customer.modality] || MODALITY_CONFIG[MODALITY_MORTGAGE];
   const { maxLtv } = modalityConfig;

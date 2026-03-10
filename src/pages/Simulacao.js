@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import HeaderSimulacao from '../components/HeaderSimulacao';
 import StepperContainer from '../components/Stepper/StepperContainer';
@@ -8,6 +8,10 @@ import AnimatedLines from '../components/MagicUI/AnimatedLines';
 
 export default function Simulacao() {
   const history = useHistory();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleFormSubmitSuccess = (submissionData) => {
     history.push('/simulador/parcelas', { submissionData });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import emailjs from '@emailjs/browser';
 import {
@@ -7,7 +7,6 @@ import {
   CurrencyDollarIcon,
   ClockIcon,
   UserIcon,
-  ArrowPathIcon,
 } from '@heroicons/react/24/solid';
 import { emailjs as emailjsConfig, isEmailjsConfigured } from '../../config/env';
 
@@ -31,6 +30,10 @@ function StepperSummary({ steps, responses, creditType, onBack, onEditStep, onSu
   });
 
   const [isSending, setIsSending] = useState(false);
+  const [showProgressDialog, setShowProgressDialog] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const progressIntervalRef = useRef(null);
+  const submitDoneRef = useRef(false);
 
   // Formatar valor monetário
   const formatCurrency = (value) => {
@@ -222,60 +225,102 @@ function StepperSummary({ steps, responses, creditType, onBack, onEditStep, onSu
     );
   };
 
-  // Handler de envio (envia por EmailJS e redireciona para simulador de parcelas)
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!isFormValid() || isSending) return;
+  const runSubmit = async (nome, cpf, telefone, email, stepsTexto, submissionData) => {
+    if (isEmailjsConfigured()) {
+      try {
+        await emailjs.send(
+          emailjsConfig.serviceId,
+          emailjsConfig.templateId,
+          { nome, cpf, telefone, email, steps: stepsTexto },
+          emailjsConfig.publicKey,
+        );
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.warn('Falha ao enviar email:', err);
+      }
+    }
+    if (typeof onSubmit === 'function') {
+      onSubmit(submissionData);
+    }
+  };
 
-    setIsSending(true);
-    try {
-      const nome = formData.nome.trim();
-      const cpf = formData.cpf.replace(/\D/g, '');
-      const telefone = formData.telefone.replace(/\D/g, '');
-      const email = formData.email.trim();
+  // Dialog de progresso: mínimo 3s, 0% a 100%
+  const PROGRESS_DURATION_MS = 3000;
+  const PROGRESS_STEP_MS = 50;
 
-      const stepsTexto = steps
-        .map((step) => {
-          const resposta = getFormattedResponse(step, responses[step.id]);
-          return `${step.label}: ${resposta}`;
-        })
-        .filter((linha) => linha)
-        .join('\n');
+  useEffect(() => {
+    if (!showProgressDialog) return () => {};
 
-      const submissionData = {
-        dadosPessoais: { nome, cpf, email, telefone },
-        simulacao: {
-          tipoCredito: creditType,
-          respostas: responses,
-          steps: steps.map((step) => ({
-            id: step.id,
-            label: step.label,
-            resposta: getFormattedResponse(step, responses[step.id]),
-          })),
-        },
-        timestamp: new Date().toISOString(),
-      };
+    setProgress(0);
+    const totalSteps = Math.ceil(PROGRESS_DURATION_MS / PROGRESS_STEP_MS);
+    const increment = 100 / totalSteps;
+    let step = 0;
 
-      if (isEmailjsConfigured()) {
-        try {
-          await emailjs.send(
-            emailjsConfig.serviceId,
-            emailjsConfig.templateId,
-            { nome, cpf, telefone, email, steps: stepsTexto },
-            emailjsConfig.publicKey,
-          );
-        } catch (err) {
-          // eslint-disable-next-line no-console
-          console.warn('Falha ao enviar email:', err);
+    progressIntervalRef.current = setInterval(() => {
+      step += 1;
+      const next = Math.min(Math.round(step * increment), 100);
+      setProgress(next);
+      if (next >= 100) {
+        if (progressIntervalRef.current) {
+          clearInterval(progressIntervalRef.current);
+          progressIntervalRef.current = null;
         }
       }
+    }, PROGRESS_STEP_MS);
 
-      if (typeof onSubmit === 'function') {
-        onSubmit(submissionData);
+    return () => {
+      if (progressIntervalRef.current) {
+        clearInterval(progressIntervalRef.current);
       }
-    } finally {
-      setIsSending(false);
-    }
+    };
+  }, [showProgressDialog]);
+
+  // Quando progresso chega a 100%, espera 1s (usuário vê 100%) e redireciona sem fechar o dialog
+  const DELAY_AT_100_MS = 1000;
+
+  useEffect(() => {
+    if (!showProgressDialog || progress < 100 || submitDoneRef.current) return () => {};
+    submitDoneRef.current = true;
+
+    const nome = formData.nome.trim();
+    const cpf = formData.cpf.replace(/\D/g, '');
+    const telefone = formData.telefone.replace(/\D/g, '');
+    const email = formData.email.trim();
+    const stepsTexto = steps
+      .map((step) => {
+        const resposta = getFormattedResponse(step, responses[step.id]);
+        return `${step.label}: ${resposta}`;
+      })
+      .filter((linha) => linha)
+      .join('\n');
+    const submissionData = {
+      dadosPessoais: { nome, cpf, email, telefone },
+      simulacao: {
+        tipoCredito: creditType,
+        respostas: responses,
+        steps: steps.map((s) => ({
+          id: s.id,
+          label: s.label,
+          resposta: getFormattedResponse(s, responses[s.id]),
+        })),
+      },
+      timestamp: new Date().toISOString(),
+    };
+
+    const timeoutId = setTimeout(async () => {
+      await runSubmit(nome, cpf, telefone, email, stepsTexto, submissionData);
+      // Não fecha o dialog: o redirecionamento (onSubmit) troca de página e o dialog some junto
+    }, DELAY_AT_100_MS);
+
+    return () => clearTimeout(timeoutId);
+  }, [showProgressDialog, progress]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!isFormValid() || isSending) return;
+    submitDoneRef.current = false;
+    setIsSending(true);
+    setShowProgressDialog(true);
   };
 
   // Handler para editar step específico
@@ -484,22 +529,49 @@ function StepperSummary({ steps, responses, creditType, onBack, onEditStep, onSu
           type="button"
           onClick={handleSubmit}
           disabled={!isFormValid() || isSending}
-          className={`w-full sm:flex-1 px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold text-white transition-all duration-200 shadow-lg flex items-center justify-center gap-2 ${
+          className={`w-full sm:flex-1 px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold text-white transition-all duration-200 shadow-lg ${
             isFormValid() && !isSending
               ? 'bg-green-600 hover:bg-green-700 cursor-pointer'
               : 'bg-gray-400 cursor-not-allowed'
           }`}
         >
-          {isSending ? (
-            <>
-              <ArrowPathIcon className="h-5 w-5 animate-spin flex-shrink-0" aria-hidden />
-              <span>Enviando...</span>
-            </>
-          ) : (
-            'Enviar Simulação'
-          )}
+          Enviar Simulação
         </button>
       </div>
+
+      {/* Dialog de progresso (mín. 3s, 0% → 100%) */}
+      {showProgressDialog && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          role="dialog"
+          aria-modal
+          aria-labelledby="progress-dialog-title"
+        >
+          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 sm:p-8">
+            <h3
+              id="progress-dialog-title"
+              className="text-lg sm:text-xl font-bold text-gray-800 mb-4 text-center"
+            >
+              Finalizando simulação
+            </h3>
+            <p className="text-sm text-gray-500 text-center mb-6">
+              Enviando seus dados... Aguarde.
+            </p>
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm font-medium text-gray-600">
+                <span>Progresso</span>
+                <span>{progress}%</span>
+              </div>
+              <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-green-600 rounded-full transition-all duration-300 ease-out"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Informação adicional */}
       <div className="mt-4 p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
