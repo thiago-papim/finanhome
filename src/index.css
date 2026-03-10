@@ -76,3 +76,43 @@ body {
 .transition-smooth {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+
+/* largura da scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* trilho */
+::-webkit-scrollbar-track {
+  background: #cee8ff;
+}
+
+/* thumb */
+::-webkit-scrollbar-thumb {
+  background: #3d5a80;
+  border-radius: 999px;
+}
+
+/* hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #163c7e;
+}
+
+/* DARK MODE */
+
+/* trilho */
+.dark ::-webkit-scrollbar-track {
+  background: #0f1c2e;
+}
+
+/* thumb */
+.dark ::-webkit-scrollbar-thumb {
+  background: #3d5a80;
+  border-radius: 999px;
+}
+
+/* hover */
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #163c7e;
+}
