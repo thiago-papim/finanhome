@@ -77,7 +77,7 @@ function Footer({ onSimulate }) {
         </div>
         <div className="border-t border-slate-800 pt-8 text-center text-sm text-slate-400">
           <p>© {new Date().getFullYear()} FinanHome. Todos os direitos reservados.</p>
-          <p className="mt-2">CNPJ: 00.000.000/0001-00 | Licenciado pelo Banco Central</p>
+          <p className="mt-2">CNPJ: 57.412.735/0001-40 | Licenciado pelo Banco Central</p>
         </div>
       </div>
     </footer>

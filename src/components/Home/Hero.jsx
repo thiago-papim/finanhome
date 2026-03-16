@@ -86,7 +86,7 @@ function Hero({ onSimulate }) {
                     transform: 'scale(1.2)',
                   }}
                 />
-                <div className="relative">
+                <div className="relative pt-10">
                   <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 leading-tight">
                     <span className="block bg-gradient-to-r from-white via-blue-100 to-cyan-100 bg-clip-text text-transparent drop-shadow-2xl">
                       Financiamento
