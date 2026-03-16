@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 function Footer({ onSimulate }) {
   return (
@@ -49,19 +50,19 @@ function Footer({ onSimulate }) {
             <h4 className="font-semibold mb-4">Institucional</h4>
             <ul className="space-y-2 text-sm text-slate-400">
               <li>
-                <button type="button" className="hover:text-white transition-colors">
+                <Link to="/sobre-nos" className="hover:text-white transition-colors">
                   Sobre nós
-                </button>
+                </Link>
               </li>
               <li>
-                <button type="button" className="hover:text-white transition-colors">
+                <Link to="/seguranca" className="hover:text-white transition-colors">
                   Segurança
-                </button>
+                </Link>
               </li>
               <li>
-                <button type="button" className="hover:text-white transition-colors">
+                <Link to="/privacidade" className="hover:text-white transition-colors">
                   Privacidade
-                </button>
+                </Link>
               </li>
             </ul>
           </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Bars3Icon, XMarkIcon, ShieldCheckIcon, LockClosedIcon } from '@heroicons/react/24/solid';
-import logo from '../imagens/finanhome-logo.svg';
+import logo from '../imagens/Logo.png';
 import ShinyButton from './MagicUI/ShinyButton';
 import AnimatedGrid from './MagicUI/AnimatedGrid';
 
@@ -62,8 +62,8 @@ export default function Header() {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full max-w-full ${
           isScrolled
-            ? 'bg-slate-900/95 backdrop-blur-xl shadow-lg shadow-slate-900/50 py-3'
-            : 'bg-slate-900/80 backdrop-blur-md py-4'
+            ? 'bg-slate-600/50 backdrop-blur-xl shadow-lg shadow-slate-900/50 py-3'
+            : 'bg-slate-500/50 backdrop-blur-md py-4'
         }`}
       >
         <AnimatedGrid opacity="low" className="opacity-5" />
@@ -73,7 +73,7 @@ export default function Header() {
             <div className="flex items-center gap-3">
               <img
                 className={`object-contain transition-all duration-300 ${
-                  isScrolled ? 'h-12 w-12' : 'h-14 w-14'
+                  isScrolled ? 'h-20 w-20' : 'h-24 w-24'
                 }`}
                 src={logo}
                 alt="FinanHome"

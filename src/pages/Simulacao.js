@@ -18,13 +18,13 @@ export default function Simulacao() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white overflow-x-hidden w-full max-w-full">
+    <div className="bg-[#1c3953] min-h-screen text-white overflow-x-hidden w-full max-w-full">
       <HeaderSimulacao />
       <div className="pt-20 pb-20">
-        <AnimatedGradient className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <AnimatedGradient className="relative flex items-center justify-center overflow-hidden">
           <AnimatedGrid opacity="low" />
           <AnimatedLines direction="horizontal" />
-          <div className="flex w-full justify-center items-start min-h-screen pt-8 pb-20 relative z-10">
+          <div className="bg-[#1c3953] flex w-full justify-center items-start pt-8 pb-20 relative z-10">
             <StepperContainer onFormSubmitSuccess={handleFormSubmitSuccess} />
           </div>
         </AnimatedGradient>
