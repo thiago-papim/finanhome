@@ -89,7 +89,7 @@ export default function Privacidade() {
               dados incompletos ou desatualizados; solicitar a anonimização, bloqueio ou eliminação
               de dados desnecessários ou tratados em desconformidade; revogar o consentimento; e
               solicitar a portabilidade dos dados. Para exercer esses direitos, entre em contato
-              pelo e-mail contato@finanhome.com.br.
+              pelo e-mail contato@finanhomecred.com.br.
             </p>
           </section>
 
@@ -120,7 +120,7 @@ export default function Privacidade() {
             <h2 className="text-xl font-semibold text-white mb-3">8. Contato</h2>
             <p className="leading-relaxed">
               Para dúvidas ou solicitações relacionadas a esta política ou aos seus dados pessoais:
-              contato@finanhome.com.br ou 0800 123 4567 (segunda a sexta, 9h às 18h).
+              contato@finanhomecred.com.br ou 0800 123 4567 (segunda a sexta, 9h às 18h).
             </p>
           </section>
         </div>

@@ -79,7 +79,7 @@ export default function Seguranca() {
             <h2 className="text-xl font-semibold text-white mb-3">Dúvidas</h2>
             <p className="leading-relaxed">
               Em caso de dúvidas sobre segurança ou suspeita de uso indevido de sua conta ou dados,
-              entre em contato pelo e-mail contato@finanhome.com.br ou pelo telefone 0800 123 4567.
+              entre em contato pelo e-mail contato@finanhomecred.com.br ou pelo telefone 0800 123 4567.
             </p>
           </section>
         </div>

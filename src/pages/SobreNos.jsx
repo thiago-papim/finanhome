@@ -61,7 +61,7 @@ export default function SobreNos() {
             <h2 className="text-xl font-semibold text-white mb-3">Contato</h2>
             <p className="leading-relaxed">
               Para dúvidas sobre a FinanHome ou nossos serviços, entre em contato pelo telefone 0800
-              123 4567 ou pelo e-mail contato@finanhome.com.br, de segunda a sexta-feira, das 9h às
+              123 4567 ou pelo e-mail contato@finanhomecred.com.br, de segunda a sexta-feira, das 9h às
               18h.
             </p>
           </section>

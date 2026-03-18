@@ -70,7 +70,7 @@ function Footer({ onSimulate }) {
             <h4 className="font-semibold mb-4">Contato</h4>
             <ul className="space-y-2 text-sm text-slate-400">
               <li>0800 123 4567</li>
-              <li>contato@finanhome.com.br</li>
+              <li>contato@finanhomecred.com.br</li>
               <li>Segunda a Sexta, 9h às 18h</li>
             </ul>
           </div>
