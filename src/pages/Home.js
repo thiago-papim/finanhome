@@ -10,6 +10,7 @@ import FinalCTA from '../components/Home/FinalCTA';
 import Footer from '../components/Home/Footer';
 import MetricsBar from '../components/MagicUI/MetricsBar';
 import SectionDivider from '../components/MagicUI/SectionDivider';
+import WhatsAppFloatButton from '../components/WhatsAppFloatButton';
 
 export default function Home() {
   const history = useHistory();
@@ -20,6 +21,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-white overflow-x-hidden w-full max-w-full">
+      <WhatsAppFloatButton />
       <Header />
       <Hero onSimulate={handleSimulate} />
 

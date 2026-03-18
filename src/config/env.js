@@ -12,3 +12,12 @@ export const emailjs = {
 
 export const isEmailjsConfigured = () =>
   Boolean(emailjs.serviceId && emailjs.templateId && emailjs.publicKey);
+
+// WhatsApp
+export const whatsapp = {
+  // Formato aceito: qualquer coisa com DDD (ex.: "5511999999999" ou "+55 11 99999-9999")
+  number: process.env.REACT_APP_WHATSAPP_NUMBER || '',
+  message: process.env.REACT_APP_WHATSAPP_MESSAGE || 'Olá! Quero simular meu crédito imobiliário.',
+};
+
+export const isWhatsappConfigured = () => Boolean(whatsapp.number);

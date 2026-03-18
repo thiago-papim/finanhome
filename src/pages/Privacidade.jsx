@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { ArrowLeftIcon } from '@heroicons/react/24/solid';
 import Header from '../components/Header';
 import Footer from '../components/Home/Footer';
+import WhatsAppFloatButton from '../components/WhatsAppFloatButton';
 
 export default function Privacidade() {
   const history = useHistory();
@@ -13,6 +14,7 @@ export default function Privacidade() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
+      <WhatsAppFloatButton />
       <Header />
       <main className="pt-24 pb-16 px-4 max-w-4xl mx-auto">
         <Link
