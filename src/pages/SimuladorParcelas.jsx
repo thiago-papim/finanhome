@@ -117,8 +117,15 @@ export default function SimuladorParcelas() {
     }));
 
     try {
+      const schedulePreviewMonths = Math.max(
+        1,
+        Math.min(
+          Number(customer.term) || 1,
+          (MODALITY_CONFIG[customer.modality] || MODALITY_CONFIG[MODALITY_MORTGAGE]).maxTermMonths,
+        ),
+      );
       const multi = simulateMultiBank(customerInput, loanInput, bankInputs, {
-        schedulePreviewMonths: 120,
+        schedulePreviewMonths,
       });
       return multi.bankResults.map((r) => ({
         bankId: r.bankKey,
@@ -266,7 +273,9 @@ export default function SimuladorParcelas() {
                 <div>
                   {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
                   <label className="text-xs font-bold text-slate-500 uppercase mb-2 block">
-                    Valor financiado
+                    {customer.modality === MODALITY_HOME_EQUITY
+                      ? 'Valor liberado'
+                      : 'Valor financiado'}
                     <div className="flex gap-2 mt-1">
                       <input
                         id="parcelas-valor-financiado"
@@ -459,7 +468,7 @@ export default function SimuladorParcelas() {
                             </tr>
                           </thead>
                           <tbody>
-                            {result.schedule.slice(0, 100).map((row) => (
+                            {result.schedule.map((row) => (
                               <tr key={row.month} className="border-b border-slate-800/20">
                                 <td className="p-2 text-slate-500">{row.month}</td>
                                 <td className="p-2 text-right">{formatBRL(row.amort)}</td>
