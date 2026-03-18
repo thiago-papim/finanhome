@@ -16,7 +16,7 @@ export const isEmailjsConfigured = () =>
 // WhatsApp
 export const whatsapp = {
   // Formato aceito: qualquer coisa com DDD (ex.: "5511999999999" ou "+55 11 99999-9999")
-  number: process.env.REACT_APP_WHATSAPP_NUMBER || '',
+  number: process.env.REACT_APP_WHATSAPP_NUMBER || '5511949160023',
   message: process.env.REACT_APP_WHATSAPP_MESSAGE || 'Olá! Quero simular meu crédito imobiliário.',
 };
 
